@@ -3,6 +3,7 @@ const file = {
     alias: "f",
     descripcion: "Permite establecer el path del archivo CSV que contiene los datos a analizar."
 }
+
 const country = {
     flag: true,
     alias: "c",
@@ -14,11 +15,11 @@ const year = {
     descripcion: "Permite especificar el año para el cual se requiere las estadísticas. Por defecto 2018. ",
     default: 2018
 }
+
 const out = {
     flag: true,
     alias: "o",
     descripcion: "Establece el nombre del archivo donde se almacenará los resultados."
-
 }
 
 const argv = require("yargs")
