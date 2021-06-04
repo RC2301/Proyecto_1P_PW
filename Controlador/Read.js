@@ -158,9 +158,9 @@ const valorSPais = (datos, media, cod, year) => {
 
     datoPaises(datos, datoPais, year);
     if (datoPais > media) {
-        return `Suscripciones del pais ${cod} - ${pais.nombre_ciudad} en el año ${year}, con: ${datoPais}. Es mayor a la Media Mundial`;
+        return `                         Suscripciones del pais ${cod} - ${pais.nombre_ciudad} en el año ${year}, con: ${datoPais}. Es mayor a la Media Mundial`;
     } else {
-        return `La Media Mundial en el año ${year} es mayor a las Suscripciones del país ${pais.nombre_ciudad}: ${datoPais}`;
+        return `                         Media Mundial en el año ${year} es mayor a las Suscripciones del país ${pais.nombre_ciudad}: ${datoPais}`;
     }
 
 }
@@ -268,27 +268,28 @@ const imprimirPorCon = (datos, cod, year) => {
     porD = resultado[2].PorDebajo;
     porE = resultado[1].PorEncima;
     console.log();
-    console.log("****SUSCRIPCIONES DE TELEFONÍA CELULAR MOVÍL****".green);
-    console.log("-------------------------------------------------------------------------".magenta);
-    console.log(`Media de suscripciones de todos los países del año ${year} es: ${me}`.yellow);
+    console.log("                    SUSCRIPCIONES DE TELEFONÍA CELULAR MOVÍL                    .".black.bgWhite);
+    console.log();
+    console.log(`                         Media de suscripciones de todos los países del año ${year} es: ${me}`.yellow);
     console.log();
     console.log(MoM.yellow);
     console.log();
-    console.log(`Países arriba del país ${cod} - ${pais.nombre_ciudad}, Año ${year}`.bgWhite.black);
+    console.log(`                    Países arriba del país ${cod} - ${pais.nombre_ciudad}, Año ${year}                    .`.bgGreen.black);
     if (porE == false) {
         console.log("No existe ningun dato".red);
     } else {
         for (const key in porE) {
             if (porE[key] == undefined || porE[key].suma == 0) {} else {
                 console.log("");
-                console.log(`País: ${porE[key].nombre.green}`);
-                console.log(`Suscripciones: ${porE[key].suma}`.yellow);
+                console.log(`                         Codigo: ${porE[key].cod}`.random);
+                console.log(`                         País: ${porE[key].nombre.green}`);
+                console.log(`                         Suscripciones: ${porE[key].suma}`.yellow);
                 console.log("");
             }
         }
     }
     console.log();
-    console.log(`Países debajo del país ${cod} - ${pais.nombre_ciudad}, Año ${year}`.bgWhite.black);
+    console.log(`                    Países debajo del país ${cod} - ${pais.nombre_ciudad}, Año ${year}                    .`.bgWhite.black);
     if (porD == false) {
         console.log("No existe ningun dato".red);
     } else {
@@ -296,8 +297,10 @@ const imprimirPorCon = (datos, cod, year) => {
             if (porD[key] == undefined || porD[key].suma == 0) {
 
             } else {
-                console.log(`País: ${porD[key].nombre.green}`);
-                console.log(`Suscripciones: ${porD[key].suma}`.yellow);
+                console.log("");
+                console.log(`                         Codigo: ${porE[key].cod}`.random);
+                console.log(`                         País: ${porD[key].nombre.green}`);
+                console.log(`                         Suscripciones: ${porD[key].suma}`.yellow);
                 console.log("");
             }
 
@@ -305,16 +308,150 @@ const imprimirPorCon = (datos, cod, year) => {
     }
 
     console.log();
-    console.log(`Top 5 países del año ${year}`.bgGreen.black);
+    console.log(`                    Top 5 países del año ${year}                    .`.bgGreen.black);
+    console.log();
     if (top[0].dato == 0) {
         console.log("No existe ningun dato".red);
     } else {
         for (const key in top) {
             if (top[key] == undefined || top[key].dato == 0) {} else {
-                console.log(`País: ${top[key].nombre.green}`);
-                console.log(`Suscripciones: ${top[key].dato}`.yellow);
+                console.log("");
+                console.log(`                         Codigo: ${porE[key].cod}`.random);
+                console.log(`                         País: ${top[key].nombre.green}`);
+                console.log(`                         Suscripciones: ${top[key].dato}`.yellow);
                 console.log("");
             }
         }
     }
 }
+const imprimirPorWeb = (datos, cod, year) => {
+    let pais = datos.find(obj => obj.codigo_ciudad === cod);
+    const hostname = '127.0.0.2';
+    const port = 3000;
+    MoM = resultado[3].MayorOMenor;
+    me = resultado[0].mediaMundial;
+    top = resultado[4].top5;
+    porD = resultado[2].PorDebajo;
+    porE = resultado[1].PorEncima;
+
+    top5 = [];
+    porEn = [];
+    porDe = [];
+    if (porE == false) {
+        porEn.push(`<tr class="table-danger"><td>No hay dato</td><td>No hay dato</td></tr>`);
+    } else {
+        for (const i in porE) {
+            if (porE[i] == undefined || porE[i].suma == 0) {} else {
+                porEn.push(`<tr class="table-success"><td>${porE[i].nombre}</td><td>${porE[i].suma}</td></tr>`);
+            }
+
+        }
+    }
+    if (top[0].dato == 0) {
+        top5.push(`<tr class="table-danger"><td>No hay dato</td><td>No hay dato</td></tr>`);
+    } else {
+        for (const i in top) {
+            if (top[i] == undefined || top[i].dato == 0) {} else {
+                top5.push(`<tr class="table-secondary"><td>${top[i].nombre}</td><td>${top[i].dato}</td></tr>`);
+            }
+
+        }
+    }
+    if (porD == false) {
+        porDe.push(`<tr class="table-danger"><td>No hay dato</td><td>No hay dato</td></tr>`);
+    } else {
+        for (const i in porD) {
+            if (porD[i] == undefined || porD[i].suma == 0) {} else {
+                porDe.push(`<tr class="table-dark"><td>${porD[i].nombre}</td><td>${porD[i].suma}</td></tr>`);
+            }
+
+        }
+    }
+    const server = http.createServer((req, res) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+        res.end(`<!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='utf-8'>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <title>Proyecto</title>
+                <meta name='viewport' content='width=device-width, initial-scale=1'>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+                <link rel="stylesheet" type="text/css" href="../Bootstrap/css/bootstrap.min.css">
+                <script type="text/javascript" src="../Bootstrap/js/bootstrap.min.js"></script>
+                <script type="text/javascript" src="../Bootstrap/js/jquery-3.6.0.min.js"></script>
+                <style type="text/css">
+                /* The old syntax, deprecated, but still needed, prefixed, for Opera and WebKit-based browsers */
+                
+                * {
+                    /* Background colors */
+                    background: -webkit-linear-gradient(90deg, #e74d6b 10%, #8cc8ac 90%);
+                    background: -moz-linear-gradient(90deg, #e74d6b 10%, #8cc8ac 90%);
+                    background: -ms-linear-gradient(90deg, #e74d6b 10%, #8cc8ac 90%);
+                    background: -o-linear-gradient(90deg, #e74d6b 10%, #8cc8ac 90%);
+                    background: linear-gradient(90deg, #e74d6b 10%, #8cc8ac 90%);
+                    background: -webkit-linear-gradient(90deg, #65997d 10%, #fccb6e 90%);
+                    background: -moz-linear-gradient(90deg, #65997d 10%, #fccb6e 90%);
+                    background: -ms-linear-gradient(90deg, #65997d 10%, #fccb6e 90%);
+                    background: -o-linear-gradient(90deg, #65997d 10%, #fccb6e 90%);
+                    background: linear-gradient(90deg, #65997d 10%, #fccb6e 90%);
+                }
+            </style>
+            </head>
+            <body background: linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1)), url(http://foo.com/image.jpg);>
+                <center>
+                <h1 class="font-weight-bold">Suscripciones de telefonía celular movíl</h1>
+                    <h5 class="pb-3">La media de suscripciones de todos los países en el año ${year} es: ${me}</h5>
+                    <h5>${MoM}</h5>
+                <hr/>
+                <br>
+                <h1 class="font-weight-bold">RICHARD CAMACHO</h1>
+                <br>
+                            <h1 class="font-weight-bold">Países por Encima del país ${cod} - ${pais.nombre_ciudad}, Año ${year}</h1>
+                            <table class="table table-sm">
+                                <thead class="text-center">
+                                <tr class="table-info">
+                                        <th scope="col">País</th>
+                                        <th scope="col">Suscripciones de telefonía celular movíl</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-white text-center">
+                                    ${porEn}
+                                </tbody>
+                            </table>
+                            <h1 class="font-weight-bold">Países por Debajo del país ${cod} - ${pais.nombre_ciudad}, , Año ${year}</h1>
+                            <table class="table table-striped">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th scope="col">País</th>
+                                        <th scope="col">Suscripciones de telefonía celular movíl</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-white text-center">
+                                    ${porDe}
+                                </tbody>
+                            </table>
+                <hr/>
+                    <h1 class="font-weight-bold">Top 5 países del año ${year}</h1>
+                        <table class="table table-dark table-borderless">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col">País</th>
+                                    <th scope="col">Suscripciones de telefonía celular movíl</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-white text-center">
+                                ${top5}
+                            </tbody>
+                        </table>
+            </center>
+            </body>
+            </html>`);
+    });
+
+    server.listen(port, hostname, () => {
+        console.log(`                    Servidor corriendo en http://${hostname}:${port}/                    .`.black.bgGreen);
+    });
+}
+module.exports = { read }
