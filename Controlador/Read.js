@@ -129,3 +129,25 @@ const arreglar = (cod, year) => {
     resultado.push({ top5: top });
     return arreglado;
 }
+const calcularMedia = (datos, cod, year) => {
+    let cont = 0;
+    let len = 0;
+    for (let i = 0; i < datos.length; i++) {
+        datoy = Number(datos[i].year[year]);
+        if (datoy && datoy != 0) {
+            cont += datoy;
+            len++;
+        }
+    }
+    media = cont / len;
+    mediaR = media.toFixed(2);
+    if (mediaR > 0) {
+        resultado.push({ mediaMundial: mediaR });
+    } else {
+        resultado.push({ mediaMundial: "Sin dato" });
+    }
+
+    let result = valorSPais(datos, mediaR, cod, year);
+    resultado.push({ MayorOMenor: result });
+
+}
