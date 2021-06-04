@@ -144,10 +144,23 @@ const calcularMedia = (datos, cod, year) => {
     if (mediaR > 0) {
         resultado.push({ mediaMundial: mediaR });
     } else {
-        resultado.push({ mediaMundial: "Sin dato" });
+        resultado.push({ mediaMundial: "No existen datos." });
     }
 
     let result = valorSPais(datos, mediaR, cod, year);
     resultado.push({ MayorOMenor: result });
+
+}
+const valorSPais = (datos, media, cod, year) => {
+    let pais = datos.find(obj => obj.codigo_ciudad === cod);
+
+    let datoPais = pais.year[year];
+
+    datoPaises(datos, datoPais, year);
+    if (datoPais > media) {
+        return `Suscripciones del pais ${cod} - ${pais.nombre_ciudad} en el año ${year}, con: ${datoPais}. Es mayor a la Media Mundial`;
+    } else {
+        return `La Media Mundial en el año ${year} es mayor a las Suscripciones del país ${pais.nombre_ciudad}: ${datoPais}`;
+    }
 
 }
