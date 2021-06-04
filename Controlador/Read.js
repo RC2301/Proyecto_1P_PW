@@ -180,3 +180,27 @@ const datoPaises = (datos, sumaP, year) => {
     resultado.push({ PorDebajo: porD });
 
 }
+const porEncima = (vec, sumaP) => {
+    vec.sort(function(a1, b2) {
+        if (a1.suma > b2.suma) {
+            return 1;
+        } else if (a1.suma < b2.suma) {
+            return -1;
+        }
+        return 0;
+    });
+    let porE = [];
+    for (const key in vec) {
+        if (vec[key].suma > sumaP) {
+            porE.push(vec[key]);
+        }
+    }
+    if (porE < 1) {
+        return false;
+    }
+    let result = [];
+    for (let i = 0; i < 5; i++) {
+        result.push(porE[i]);
+    }
+    return result;
+}
