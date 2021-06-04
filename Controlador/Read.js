@@ -260,3 +260,61 @@ const guardarDatos = (out) => {
     })
     return true;
 }
+const imprimirPorCon = (datos, cod, year) => {
+    let pais = datos.find(obj => obj.codigo_ciudad === cod);
+    MoM = resultado[3].MayorOMenor;
+    me = resultado[0].mediaMundial;
+    top = resultado[4].top5;
+    porD = resultado[2].PorDebajo;
+    porE = resultado[1].PorEncima;
+    console.log();
+    console.log("****SUSCRIPCIONES DE TELEFONÍA CELULAR MOVÍL****".green);
+    console.log("-------------------------------------------------------------------------".magenta);
+    console.log(`Media de suscripciones de todos los países del año ${year} es: ${me}`.yellow);
+    console.log();
+    console.log(MoM.yellow);
+    console.log();
+    console.log(`Países arriba del país ${cod} - ${pais.nombre_ciudad}, Año ${year}`.bgWhite.black);
+    if (porE == false) {
+        console.log("No existe ningun dato".red);
+    } else {
+        for (const key in porE) {
+            if (porE[key] == undefined || porE[key].suma == 0) {} else {
+                console.log("");
+                console.log(`País: ${porE[key].nombre.green}`);
+                console.log(`Suscripciones: ${porE[key].suma}`.yellow);
+                console.log("");
+            }
+        }
+    }
+    console.log();
+    console.log(`Países debajo del país ${cod} - ${pais.nombre_ciudad}, Año ${year}`.bgWhite.black);
+    if (porD == false) {
+        console.log("No existe ningun dato".red);
+    } else {
+        for (const key in porD) {
+            if (porD[key] == undefined || porD[key].suma == 0) {
+
+            } else {
+                console.log(`País: ${porD[key].nombre.green}`);
+                console.log(`Suscripciones: ${porD[key].suma}`.yellow);
+                console.log("");
+            }
+
+        }
+    }
+
+    console.log();
+    console.log(`Top 5 países del año ${year}`.bgGreen.black);
+    if (top[0].dato == 0) {
+        console.log("No existe ningun dato".red);
+    } else {
+        for (const key in top) {
+            if (top[key] == undefined || top[key].dato == 0) {} else {
+                console.log(`País: ${top[key].nombre.green}`);
+                console.log(`Suscripciones: ${top[key].dato}`.yellow);
+                console.log("");
+            }
+        }
+    }
+}
