@@ -228,3 +228,25 @@ const porDebajo = (vec, sumaP) => {
     }
     return result;
 }
+const topCinco = (datos, year) => {
+    let vec = [];
+    for (const i in datos) {
+        dato = Number(datos[i].year[year]);
+        nombre = datos[i].nombre_ciudad;
+        datosC = { nombre, dato };
+        vec.push(datosC);
+    }
+    vec.sort(function(a1, b2) {
+        if (a1.dato > b2.dato) {
+            return -1;
+        } else if (a1.dato < b2.dato) {
+            return +1;
+        }
+        return 0;
+    });
+    let result = []
+    for (let i = 0; i < 5; i++) {
+        result.push(vec[i]);
+    }
+    return result;
+}
