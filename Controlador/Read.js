@@ -250,3 +250,13 @@ const topCinco = (datos, year) => {
     }
     return result;
 }
+const guardarDatos = (out) => {
+    let data = JSON.stringify(resultado);
+    let name = `./Data/${out}.json`;
+    fs.writeFile(name, data, (err) => {
+        if (err) {
+            console.log("No se ha podido guardar el archivo".bgRed, err);
+        }
+    })
+    return true;
+}
