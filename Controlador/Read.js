@@ -164,3 +164,19 @@ const valorSPais = (datos, media, cod, year) => {
     }
 
 }
+const datoPaises = (datos, sumaP, year) => {
+    let vec = [];
+    for (const i in datos) {
+        if (datos[i].year[year] && datos[i].year[year] != 0) {
+            nombre = datos[i].nombre_ciudad;
+            suma = Number(datos[i].year[year]);
+            vec.push({ nombre, suma });
+        }
+    }
+
+    let porE = porEncima(vec, sumaP);
+    let porD = porDebajo(vec, sumaP);
+    resultado.push({ PorEncima: porE });
+    resultado.push({ PorDebajo: porD });
+
+}
